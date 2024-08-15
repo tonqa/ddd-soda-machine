@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="de">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
+    <script th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
+    <script type="text/javascript">
+        function setupWebSocket() {
+            let socket = new SockJS('/websocket');
+            let stompClient = Stomp.over(socket);
+            stompClient.connect({}, () => {
+                let automatonId = getCookie("automaton-id");
+                stompClient.subscribe('/topic/messages/' + automatonId, (message) => {
+                    document.getElementById("display").textContent = JSON.parse(message.body).content;
+                });
+            });
+        }
+        function setupStateForm() {
+            let automatonForm = document.getElementById("stateForm");
+            automatonForm.onsubmit = (e) => {
+                e.preventDefault();
+                let value = e.submitter.value;
+                let action = automatonForm.getAttribute("action");
+                fetch(action + "/" + value, {
+                    method: "POST"
+                }).then(() => {
+                    updateAutomatonState(value === "ON");
+                })
+            }
+        }
+        function setupRecipeForm() {
+            let selectForm = document.getElementById("recipeForm");
+            selectForm.onsubmit = (e) => {
+                e.preventDefault();
+                let value = e.submitter.value;
+                let action = selectForm.getAttribute("action");
+                fetch(action + "/" + value, { method: "POST" })
+            }
+        }
+        function setupPaymentForm() {
+            let paymentForm = document.getElementById("paymentForm");
+            paymentForm.onsubmit = (e) => {
+                e.preventDefault();
+                let value = e.submitter.value;
+                let action = paymentForm.getAttribute("action");
+                fetch(action + "/" + value, { method: "POST" })
+            }
+        }
+        function loadCurrentState() {
+            fetch("automaton/state").then(async (resp) => {
+                let isOn = await resp.body.pipeThrough(new TextDecoderStream());
+                updateAutomatonState(isOn === "true");
+            });
+        }
+        function updateAutomatonState(isOn) {
+            document.getElementsByName("state").forEach((htmlElement) => {
+                switch (htmlElement.value) {
+                    case "ON": htmlElement.disabled = isOn; break;
+                    case "OFF": htmlElement.disabled = !isOn; break;
+                }
+            });
+        }
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+        window.onload = () => {
+            loadCurrentState();
+            setupWebSocket();
+            setupStateForm();
+            setupRecipeForm();
+            setupPaymentForm();
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <div class="row my-1 align-items-center">
+        <div class="col"></div>
+        <div class="col-2 text-end">Automaton:</div>
+        <div class="col-6">
+            <form id="stateForm" action="#" th:action="@{/automaton}" method="post">
+                <div class="btn-group">
+                    <input type="submit" class="btn btn-sm btn-outline-primary" th:name="state" th:value="ON" disabled="disabled" />
+                    <input type="submit" class="btn btn-sm btn-outline-primary" th:name="state" th:value="OFF" disabled="disabled" />
+                </div>
+            </form>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row my-1 align-items-center">
+        <div class="col"></div>
+        <div class="col-2 text-end">Recipe:</div>
+        <div class="col-6">
+            <form id="recipeForm" action="#" th:action="@{/select}" method="post">
+                <div class="btn-group">
+                    <input type="submit" class="btn btn-sm btn-outline-primary" th:name="recipe" th:value="0" />
+                    <input type="submit" class="btn btn-sm btn-outline-primary" th:name="recipe" th:value="1" />
+                    <input type="submit" class="btn btn-sm btn-outline-primary" th:name="recipe" th:value="2" />
+                </div>
+            </form>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row my-1 align-items-center">
+        <div class="col"></div>
+        <div class="col-2 text-end">Pay:</div>
+        <div class="col-6">
+            <form id="paymentForm" action="#" th:action="@{/pay}" method="post">
+                <div class="btn-group">
+                    <input type="submit" class="btn btn-sm btn-outline-primary" th:name="coin" th:value="TEN" />
+                    <input type="submit" class="btn btn-sm btn-outline-primary" th:name="coin" th:value="TWENTY" />
+                    <input type="submit" class="btn btn-sm btn-outline-primary" th:name="coin" th:value="FIFTY" />
+                    <input type="submit" class="btn btn-sm btn-outline-primary" th:name="coin" th:value="EURO" />
+                </div>
+            </form>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row my-1 align-items-center">
+        <div class="col"></div>
+        <div class="col-2 text-end">
+            <label for="display" class="form-label">Display:</label>
+        </div>
+        <div class="col-6 text-start form-group">
+            <textarea id="display" class="form-control" type="text"
+                      readonly rows="5" th:text="|${display}|"></textarea>
+        </div>
+        <div class="col"></div>
+    </div>
+
+</div>
+
+</body>
+</html>
