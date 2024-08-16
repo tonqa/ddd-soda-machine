@@ -12,11 +12,13 @@ More to say it shows how domain objects called aggregates in DDD can be modeled 
 
 However, I will not show how to create bounded contexts. Though, I suggest to use an event queue using Spring Cloud Stream, which helps to establish an eventing mechanism in an abstract way. As well I don't use event sourcing, though this would be a small change to the code base. It is due to the reader to work through the documentation of event sourcing.
 
-## Event model
+## Design
 
-The event model was created using the event-storming method of Alberto Brandolini, which helps to properly design the application upfront in an unobtrusive way by using events as the first-class citizen.
+### Event model
 
-![Eventstorming is used to show the application design](eventstorming.png)
+The event flow was created using the event-storming method of Alberto Brandolini, which helps to properly design the application events upfront in an unobtrusive way by using events as the first-class citizen.
+
+![Eventstorming is used for design of events](eventstorming.png)
 
 ## Technology decisions
 
