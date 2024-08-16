@@ -2,13 +2,19 @@
 
 ## Design goals
 
-The soda machine utilizes the method of Domain-Driven Design (DDD) of Eric Evans. The goal of this project is to show how we can use the out-of-the-box tools of Spring to make a proper clean domain model in DDD. More to say it shows how domain objects called aggregates in DDD can be modeled in a relational database. The aggregates propagate their states via events and so the architecture is event-driven. This also means tha the aggregate is a transactional context and the states propagated in between aggregates are eventually consistent and take time to propagate. To support eventing, we also use web sockets in the frontend.
+The soda machine utilizes the method of Domain-Driven Design (DDD) of Eric Evans. The goal of this project is to show how we can use the out-of-the-box tools of Spring to make a proper clean domain model in DDD. 
 
-However, we will not show how to create bounded contexts here. Though, I suggest to use a event queue using Spring Cloud Stream, which is quite new and helps to establish an eventing mechanism in an abstract way. We don't use event sourcing, though this would be a small change to the code base. It is due to the reader to work through the documentation of event sourcing.
+### In detail
+
+More to say it shows how domain objects called aggregates in DDD can be modeled in a relational database. The aggregates propagate their states via events and so the architecture is event-driven. This also means that each aggregate has a transactional context and the states propagated in between aggregates are eventually consistent and take time to propagate. To support eventing, we use Spring events in the backend and web sockets for the frontend.
+
+### Out of scope
+
+However, I will not show how to create bounded contexts. Though, I suggest to use an event queue using Spring Cloud Stream, which helps to establish an eventing mechanism in an abstract way. As well I don't use event sourcing, though this would be a small change to the code base. It is due to the reader to work through the documentation of event sourcing.
 
 ## Event model
 
-The event model was created using the event-storming method of Alberto Brandolini, which helps to properly plan the design of the application upfront in an unobtrusive way by using events as the first-class citizen.
+The event model was created using the event-storming method of Alberto Brandolini, which helps to properly design the application upfront in an unobtrusive way by using events as the first-class citizen.
 
 ![Eventstorming is used to show the application design](eventstorming.png)
 
