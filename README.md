@@ -12,6 +12,14 @@ The soda machine shows how domain objects called aggregates in DDD can be modele
 
 However, I will not show how to create bounded contexts. Though, I suggest to use an event queue using Spring Cloud Stream, which helps to establish an eventing mechanism in an abstract way. As well I don't use event sourcing, though this would be a small change to the code base. It is due to the reader to work through the documentation of event sourcing.
 
+## User Interface
+
+### UI functionality
+
+The automaton has a web UI created with thymeleaf and webjars. The automaton has a display, it can be switched on and off, the recipes can be selected and payed. There's also a mixing of drinks and a cashback of coins.
+
+![The UI design simulates an automaton](userinterface.png)
+
 ## Architecture
 
 ### Hexagonal architecture
