@@ -2,7 +2,7 @@
 
 ## Design goals
 
-The soda machine is a web app, which utilizes the method of Domain-Driven Design (DDD) of Eric Evans. The goal of this project is to show how the out-of-the-box tools of Spring can be used to make a proper clean domain model in DDD. 
+The soda machine is a web app, which utilizes the method of Domain-Driven Design (DDD) of Eric Evans. The goal of this project is to show how the out-of-the-box tools of Spring can be used to make a proper clean domain model in DDD. DDD is a modeling technique, where a domain model is the edge of the application.
 
 ### In detail
 
@@ -27,6 +27,32 @@ The automaton has a web UI created with thymeleaf and webjars. The automaton has
 Soda machine is based on the hexagonal architecture. This architecture style uses a domain model as its core and connects these via adapters to the environment. This is a fundamental change to the multiple layer architecture, in which all the layers had concerns on their own. In hexagonal architecture style all the interfaces and UIs are organized and isolated via adapters, which can be connected to ports in the domain model.
 
 ![Hexagonal architecture is used for the application](hexagonal.png)
+
+### Domain model
+
+The application is organized by the following aggregates:
+
+* **Automaton**: On each start an automaton is created, which can be switched on and off
+* **Recipe**: Holds the recipes with its ingredients, e.g. black coffee, white coffee, milk and soda
+* **Price**: Hold the prices of each of the recipes in Cent, which is dependant on a separate priceId
+* **Selection**: Holds the selected recipes of each automaton and if selecting recipes is possible
+* **Pay**: Holds the inserted coins in a money slot and the register of the automaton
+* **Mixing**: Holds the Mixer state and the inventory boxes with their fills (like a coffee, milk or soda box)
+* **Display**: Holds the output messages of each automaton, which is displayed to the UI
+* **Trace**: Traces all the events in the application and prints it to the console
+
+E.g. a `Display Message` aggregate looks like this. It extends the `AbstractAggregateRoot` interface, is annotated by `@Entity` and has a message Id annotated by `@EmbeddedId`. It contains domain methods like `sendToWebsocketPort(Port)` and registers events via `registerEvent(Event)`, which are fired on persistency.
+
+```java
+@Entity
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class DisplayMessage extends AbstractAggregateRoot<Message> {
+    @EmbeddedId
+    private MessageId id;
+    private String message;
+}
+```
 
 ### Event model
 
