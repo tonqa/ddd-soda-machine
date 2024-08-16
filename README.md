@@ -2,7 +2,7 @@
 
 ## Design goals
 
-The soda machine utilizes the method of Domain-Driven Design (DDD) of Eric Evans. The goal of this project is to show how the out-of-the-box tools of Spring can be used to make a proper clean domain model in DDD. 
+The soda machine is a web app, which utilizes the method of Domain-Driven Design (DDD) of Eric Evans. The goal of this project is to show how the out-of-the-box tools of Spring can be used to make a proper clean domain model in DDD. 
 
 ### In detail
 
@@ -24,7 +24,7 @@ The automaton has a web UI created with thymeleaf and webjars. The automaton has
 
 ### Hexagonal architecture
 
-The hexagonal architecture uses a domain model as its core and connects these via adapters to the environment. This is a fundamental change to the multiple layer architecture, in which all the layers had concerns on its own. In hexagonal architecture all the interfaces and UIs are isolated via adapters, which can be connected via ports to the domain model.
+Soda machine is based on the hexagonal architecture. This architecture style uses a domain model as its core and connects these via adapters to the environment. This is a fundamental change to the multiple layer architecture, in which all the layers had concerns on their own. In hexagonal architecture style all the interfaces and UIs are organized and isolated via adapters, which can be connected to ports in the domain model.
 
 ![Hexagonal architecture is used for the application](hexagonal.png)
 
