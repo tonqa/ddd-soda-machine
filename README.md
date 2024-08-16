@@ -16,7 +16,7 @@ However, I will not show how to create bounded contexts. Though, I suggest to us
 
 ### Hexagonal architecture
 
-The hexagonal architecture uses a domain model as its core and connects these via adapters to the environment. This is a fundamental change to the multiple layer architecture, in which all the layers had concerns on its own. In hexagonal architecture all the components like interfaces and UIs are isolated via adapters in the application layer, which can be connected via ports to the domain model.
+The hexagonal architecture uses a domain model as its core and connects these via adapters to the environment. This is a fundamental change to the multiple layer architecture, in which all the layers had concerns on its own. In hexagonal architecture all the interfaces and UIs are isolated via adapters, which can be connected via ports to the domain model.
 
 ![Hexagonal architecture is used for the application](hexagonal.png)
 
