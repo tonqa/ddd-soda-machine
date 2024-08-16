@@ -11,7 +11,7 @@ import de.eglador.dddsodamachine.recipe.domain.RecipeComposite;
 import de.eglador.dddsodamachine.pay.domain.CoinInsertedEvent;
 import de.eglador.dddsodamachine.pay.domain.CoinInsertionStartEvent;
 import de.eglador.dddsodamachine.pay.domain.CoinsInsertionCanceledEvent;
-import de.eglador.dddsodamachine.websocket.application.WebSocketHandler;
+import de.eglador.dddsodamachine.websocket.application.WebSocketPort;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -24,12 +24,12 @@ public class DisplayService {
 
     private final RecipeService recipeService;
     private final MessageRepository messageRepository;
-    private final WebSocketHandler webSocketHandler;
+    private final WebSocketPort webSocketPort;
 
-    public DisplayService(RecipeService recipeService, MessageRepository messageRepository, WebSocketHandler webSocketHandler) {
+    public DisplayService(RecipeService recipeService, MessageRepository messageRepository, WebSocketPort webSocketPort) {
         this.recipeService = recipeService;
         this.messageRepository = messageRepository;
-        this.webSocketHandler = webSocketHandler;
+        this.webSocketPort = webSocketPort;
     }
 
     public String display(Long automatonId) {
@@ -136,6 +136,6 @@ public class DisplayService {
                     message.setMessage(msg);
                     this.messageRepository.saveAndFlush(message);
                 });
-        webSocketHandler.sendMessage(automatonId, msg);
+        webSocketPort.sendMessage(automatonId, msg);
     }
 }

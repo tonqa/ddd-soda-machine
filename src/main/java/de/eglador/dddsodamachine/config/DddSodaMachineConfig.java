@@ -10,7 +10,6 @@ import de.eglador.dddsodamachine.pay.domain.RegisterFactory;
 import de.eglador.dddsodamachine.pay.domain.RegisterRepository;
 import de.eglador.dddsodamachine.price.application.RecipePriceService;
 import de.eglador.dddsodamachine.pay.application.RegisterService;
-import de.eglador.dddsodamachine.pay.domain.MoneySlotService;
 import de.eglador.dddsodamachine.price.domain.RecipePriceRepository;
 import de.eglador.dddsodamachine.price.domain.RecipePriceServiceImpl;
 import de.eglador.dddsodamachine.pay.domain.RegisterServiceImpl;
@@ -18,8 +17,8 @@ import de.eglador.dddsodamachine.recipe.application.RecipeService;
 import de.eglador.dddsodamachine.recipe.domain.RecipeConverter;
 import de.eglador.dddsodamachine.recipe.domain.RecipeRepository;
 import de.eglador.dddsodamachine.recipe.domain.RecipeServiceImpl;
-import de.eglador.dddsodamachine.websocket.application.WebSocketHandler;
-import de.eglador.dddsodamachine.websocket.domain.WebSocketHandlerImpl;
+import de.eglador.dddsodamachine.websocket.application.WebSocketPort;
+import de.eglador.dddsodamachine.websocket.adapters.WebSocketAdapter;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -69,7 +68,7 @@ public class DddSodaMachineConfig {
     }
 
     @Bean
-    public WebSocketHandler webSocketHandler(SimpMessagingTemplate messagingTemplate) {
-        return new WebSocketHandlerImpl(messagingTemplate);
+    public WebSocketPort webSocketHandler(SimpMessagingTemplate messagingTemplate) {
+        return new WebSocketAdapter(messagingTemplate);
     }
  }

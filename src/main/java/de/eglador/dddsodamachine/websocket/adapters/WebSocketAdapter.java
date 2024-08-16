@@ -1,11 +1,11 @@
-package de.eglador.dddsodamachine.websocket.domain;
+package de.eglador.dddsodamachine.websocket.adapters;
 
-import de.eglador.dddsodamachine.websocket.application.WebSocketHandler;
+import de.eglador.dddsodamachine.websocket.application.WebSocketPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 @RequiredArgsConstructor
-public class WebSocketHandlerImpl implements WebSocketHandler {
+public class WebSocketAdapter implements WebSocketPort {
 
     private final SimpMessagingTemplate messagingTemplate;
 

@@ -1,4 +1,4 @@
-package de.eglador.dddsodamachine.websocket.domain;
+package de.eglador.dddsodamachine.websocket.adapters;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
