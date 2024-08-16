@@ -9,8 +9,8 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Message extends AbstractAggregateRoot<Message> {
+public class DisplayMessage extends AbstractAggregateRoot<DisplayMessage> {
     @EmbeddedId
-    private MessageId id;
+    private DisplayMessageId id;
     private String message;
 }

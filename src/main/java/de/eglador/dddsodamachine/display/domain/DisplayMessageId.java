@@ -7,6 +7,6 @@ import java.io.Serializable;
 
 @Data
 @Embeddable
-public class MessageId implements Serializable {
+public class DisplayMessageId implements Serializable {
     Long automatonId;
 }

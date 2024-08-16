@@ -23,20 +23,20 @@ import java.util.stream.IntStream;
 public class DisplayService {
 
     private final RecipeService recipeService;
-    private final MessageRepository messageRepository;
+    private final DisplayMessageRepository displayMessageRepository;
     private final WebSocketPort webSocketPort;
 
-    public DisplayService(RecipeService recipeService, MessageRepository messageRepository, WebSocketPort webSocketPort) {
+    public DisplayService(RecipeService recipeService, DisplayMessageRepository displayMessageRepository, WebSocketPort webSocketPort) {
         this.recipeService = recipeService;
-        this.messageRepository = messageRepository;
+        this.displayMessageRepository = displayMessageRepository;
         this.webSocketPort = webSocketPort;
     }
 
     public String display(Long automatonId) {
-        MessageId messageId = new MessageId();
-        messageId.setAutomatonId(automatonId);
-        return this.messageRepository.findById(messageId)
-                .map(Message::getMessage)
+        DisplayMessageId displayMessageId = new DisplayMessageId();
+        displayMessageId.setAutomatonId(automatonId);
+        return this.displayMessageRepository.findById(displayMessageId)
+                .map(DisplayMessage::getMessage)
                 .orElse("Automaton is off");
     }
 
@@ -95,11 +95,11 @@ public class DisplayService {
 
     @EventListener
     public void handle(AutomatonsDeletedEvent event) {
-        this.messageRepository.deleteAllById(event.getAutomatonIds().stream()
+        this.displayMessageRepository.deleteAllById(event.getAutomatonIds().stream()
                 .map(id -> {
-                    MessageId messageId = new MessageId();
-                    messageId.setAutomatonId(id);
-                    return messageId;
+                    DisplayMessageId displayMessageId = new DisplayMessageId();
+                    displayMessageId.setAutomatonId(id);
+                    return displayMessageId;
                 }).toList());
     }
 
@@ -124,17 +124,17 @@ public class DisplayService {
     }
 
     private void writeMessage(Long automatonId, String msg) {
-        MessageId messageId = new MessageId();
-        messageId.setAutomatonId(automatonId);
-        this.messageRepository.findById(messageId)
-                .ifPresentOrElse(message -> {
-                    message.setMessage(msg);
-                    this.messageRepository.saveAndFlush(message);
+        DisplayMessageId displayMessageId = new DisplayMessageId();
+        displayMessageId.setAutomatonId(automatonId);
+        this.displayMessageRepository.findById(displayMessageId)
+                .ifPresentOrElse(displayMessage -> {
+                    displayMessage.setMessage(msg);
+                    this.displayMessageRepository.saveAndFlush(displayMessage);
                 }, () -> {
-                    Message message = new Message();
-                    message.setId(messageId);
-                    message.setMessage(msg);
-                    this.messageRepository.saveAndFlush(message);
+                    DisplayMessage displayMessage = new DisplayMessage();
+                    displayMessage.setId(displayMessageId);
+                    displayMessage.setMessage(msg);
+                    this.displayMessageRepository.saveAndFlush(displayMessage);
                 });
         webSocketPort.sendMessage(automatonId, msg);
     }
