@@ -41,16 +41,25 @@ The application is organized by the following aggregates:
 * **Display**: Holds the output messages of each automaton, which is displayed to the UI
 * **Trace**: Traces all the events in the application and prints it to the console
 
-E.g. a `Display Message` aggregate looks like this. It extends the `AbstractAggregateRoot` interface, is annotated by `@Entity` and has a message Id annotated by `@EmbeddedId`. It contains domain methods like `sendToWebsocketPort(Port)` and registers events via `registerEvent(Event)`, which are fired on persistency.
+E.g. a `Mixer` aggregate looks like this. It extends the `AbstractAggregateRoot` interface, is annotated by `@Entity` and has an id annotated by `@Id`. It contains domain methods like `mixRecipe(RecipeComposite)` and registers events via `registerEvent(MixingStartedEvent)`, which are fired on saving it.
 
 ```java
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DisplayMessage extends AbstractAggregateRoot<Message> {
-    @EmbeddedId
-    private MessageId id;
-    private String message;
+public class Mixer extends AbstractAggregateRoot<Mixer> {
+
+    @Id
+    private Long automatonId;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    private Set<InventoryBox> inventoryBoxes;
+
+    private RecipeId selectedRecipe;
+
+    public List<Future<Boolean>> mixRecipe(RecipeComposite recipe) {
+        // mixes each ingredient of the recipe
+    }
 }
 ```
 
