@@ -20,6 +20,7 @@ The following technologies are used:
 * Thymeleaf with Webjars
 * Websockets with SockJs und Stomp
 * H2 Database with Flyway, Lombok
+* At least Java with JDK 21
 
 ## Links
 
