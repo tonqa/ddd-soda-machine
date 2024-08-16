@@ -2,13 +2,13 @@
 
 ## Design goals
 
-In this project I utilize the method of Domain-Driven Design (DDD) to model a coffee / soda machine. The goal of this project is to show how we can use the out-of-the-box tools of Spring to make a proper domain model in DDD. More to say we will show how domain objects called aggregates in DDD are modeled correctly in a relational database. The aggregates propagate their states via events and so everything is event-driven. This also means that the states propagated between aggregates are eventually consistent and, thus, take time. For that reason to propagate the event, we also use web sockets in the frontend.
+The soda machine utilizes the method of Domain-Driven Design (DDD). The goal of this project is to show how we can use the out-of-the-box tools of Spring to make a proper clean domain model in DDD. More to say it shows how domain objects called aggregates in DDD can be modeled in a relational database. The aggregates propagate their states via events and so the architecture is event-driven. This also means that the states propagated between aggregates are eventually consistent and take time to propagate. To support eventing, we also use web sockets in the frontend.
 
-However, we will not show how to create bounded contexts here in order not to confuse the interested reader of the code even more. Though, we suggest to separate the bounded contexts via a event or message queue using Spring Cloud Stream, which is quite new and helps to establish an eventing mechanism in an abstract way. It is the perfect technology and is already added to the dependencies of this project. We also don't use event sourcing though this would be a small, easy change to the code. It is due to the reader to read through the documentation of the event sourcing method.
+However, we will not show how to create bounded contexts here. Though, I suggest to use a event queue using Spring Cloud Stream, which is quite new and helps to establish an eventing mechanism in an abstract way. We don't use event sourcing, though this would be a small change to the code base. It is due to the reader to work through the documentation of event sourcing.
 
 ## Event model
 
-This event model was created using the event-storming method, which helps to properly plan the design of the application upfront in an unobtrusive way. We recommend to 
+The event model was created using the event-storming method, which helps to properly plan the design of the application upfront in an unobtrusive way.
 
 ![Eventstorming is used to show the application design](eventstorming.png)
 
